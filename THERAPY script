@@ -1,0 +1,91 @@
+local _0x1 = loadstring(game:HttpGet('https://'..'raw.githubusercontent.com'..'/depthso/Dear-ReGui/refs/heads/main/ReGui.lua'))()
+local _0x2 = "rbxassetid://" .. _0x1.PrefabsId
+
+local _0x3 = game:GetService("InsertService")
+local _0x4 = game:GetService("Players")
+local _0x5 = game:GetService("MarketplaceService")
+local _0x6 = game:GetService("ReplicatedStorage")
+local _0x7 = workspace.Rooms
+
+local _0x8 = _0x5:GetProductInfo(game.PlaceId)
+local _0x9 = _0x4.LocalPlayer
+
+_0x1:Init({Prefabs = _0x3:LoadLocalAsset(_0x2)})
+
+local _0xA = _0x1:TabsWindow({
+    Title = _0x8.Name .. " | Pepe",
+    Size = UDim2.new(0, 350, 0, 370),
+    Position = UDim2.new(0.5, 0, 0, 70),
+}):Center()
+
+local _0xB = {
+    ["Painting"] = CFrame.new(-397, 3, -11),
+    ["Lobby"] = CFrame.new(-277, 4, 0),
+    ["Office"] = CFrame.new(-484, 4, 11),
+    ["Basement"] = CFrame.new(-523, -16, -35),
+    ["Picnic"] = CFrame.new(-615, 4, 6),
+    ["Roof front"] = CFrame.new(-265, 30, 0),
+    ["Hallway end"] = CFrame.new(-486, 4, -1),
+    ["Attic"] = CFrame.new(-367, -28, -260)
+}
+
+local _0xC = _0xA:CreateTab({Name = "Server", Visible = true})
+
+local function _0xD(_0xE)
+    local _0xF = _0xE:FindFirstChildOfClass("TouchTransmitter")
+    if not _0xF then return end
+    local _0xG = _0x9.Character
+    local _0xH = _0xG.HumanoidRootPart
+    firetouchinterest(_0xH, _0xE, 0)
+    wait()
+    firetouchinterest(_0xH, _0xE, 1)
+end
+
+local _0xI = _0xC:TreeNode({Title = "Interactive 🖱️"})
+_0xI:Button({
+    Text = "Open Office Door",
+    Callback = function()
+        local _0xJ = workspace.Office
+        local _0xK = _0xJ.Door
+        local _0xL = _0xK.Ok
+        _0xD(_0xL)
+    end,
+})
+
+local _0xM = _0xC:TreeNode({Title = "Destruction 💥"})
+_0xM:Button({
+    Text = "Bring chairs",
+    Callback = function(_0xN)
+        local _0xO = _0x9.Character
+        local _0xP = _0xO.Humanoid
+        local _0xQ = _0xO:GetPivot()
+        for _, _0xR in next, _0x7:GetChildren() do
+            local _0xS = _0xR.ChairZone:FindFirstChild("Chairs")
+            if not _0xS then continue end
+            for _, _0xT in next, _0xS:GetChildren() do
+                local _0xU = _0xT:FindFirstChildOfClass("Seat")
+                if _0xU.Occupant then continue end
+                while wait() and _0xU and not _0xU.Occupant do
+                    _0xU:Sit(_0xP)
+                end
+                _0xT:PivotTo(_0xQ)
+                wait()
+                _0xP.Sit = false
+            end
+        end
+    end,
+})
+
+local _0xV = _0xA:CreateTab({Name = "Client"})
+local _0xW = _0xV:TreeNode({Title = "Map 🗺️"})
+local _0xX = _0xW:TreeNode({Title = "Teleports 🛸"})
+
+for _0xY, _0xZ in next, _0xB do
+    _0xX:Button({
+        Text = _0xY,
+        Callback = function(_0x10)
+            local _0x11 = _0x9.Character
+            _0x11:PivotTo(_0xZ)
+        end,
+    })
+end
